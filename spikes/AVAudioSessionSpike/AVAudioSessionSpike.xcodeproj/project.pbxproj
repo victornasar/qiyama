@@ -1,0 +1,363 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04B07E01664B3F680B7A753E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00764F0E584CC0632F8BAEE0 /* AVFoundation.framework */; };
+		15995CE33F393462150F395C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8B0DE24F8DAE2756008BD8 /* ContentView.swift */; };
+		6FC6583862423A32B748AEBF /* WakeAudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F52911D4A6CE6F6D3DD707 /* WakeAudioController.swift */; };
+		7C8B9008A4B619952223227D /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2F038EBF2D2A447071FE66D /* MediaPlayer.framework */; };
+		8A114136ADCAB04AFED2612D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 966352DA4BD2AA85E0BEE45A /* Assets.xcassets */; };
+		A420C8271B7E59766968E916 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8699742B9C8DADAC90ECF59A /* SwiftUI.framework */; };
+		BAA458AA0B3CAC2EFD712656 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 710EE9BEC0FD5A2C5D4EE101 /* UIKit.framework */; };
+		FF20EAEC92281F1EAA17D0D0 /* AVAudioSessionSpikeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E727DD103B9814C011481F9 /* AVAudioSessionSpikeApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00764F0E584CC0632F8BAEE0 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		1E727DD103B9814C011481F9 /* AVAudioSessionSpikeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioSessionSpikeApp.swift; sourceTree = "<group>"; };
+		3487F7FDA7F32D27890A94B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		64F52911D4A6CE6F6D3DD707 /* WakeAudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakeAudioController.swift; sourceTree = "<group>"; };
+		710EE9BEC0FD5A2C5D4EE101 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		7A8B0DE24F8DAE2756008BD8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8699742B9C8DADAC90ECF59A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		966352DA4BD2AA85E0BEE45A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A2F038EBF2D2A447071FE66D /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		C24503DBA25B73E0FEE96F7B /* AVAudioSessionSpike.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AVAudioSessionSpike.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E286953433F987F8545D4473 /* AVAudioSessionSpike.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AVAudioSessionSpike.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B19D3071FDDEB75909B4B8D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04B07E01664B3F680B7A753E /* AVFoundation.framework in Frameworks */,
+				7C8B9008A4B619952223227D /* MediaPlayer.framework in Frameworks */,
+				A420C8271B7E59766968E916 /* SwiftUI.framework in Frameworks */,
+				BAA458AA0B3CAC2EFD712656 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		21A56110AC4CC50B321AA59D = {
+			isa = PBXGroup;
+			children = (
+				7ECD94BA0E0929041A08EEF1 /* AVAudioSessionSpike */,
+				484D5B7E9F4B6FE7805F5800 /* Frameworks */,
+				ADAC6BAC249451DD9750B729 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		484D5B7E9F4B6FE7805F5800 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				00764F0E584CC0632F8BAEE0 /* AVFoundation.framework */,
+				A2F038EBF2D2A447071FE66D /* MediaPlayer.framework */,
+				8699742B9C8DADAC90ECF59A /* SwiftUI.framework */,
+				710EE9BEC0FD5A2C5D4EE101 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7ECD94BA0E0929041A08EEF1 /* AVAudioSessionSpike */ = {
+			isa = PBXGroup;
+			children = (
+				966352DA4BD2AA85E0BEE45A /* Assets.xcassets */,
+				E286953433F987F8545D4473 /* AVAudioSessionSpike.entitlements */,
+				1E727DD103B9814C011481F9 /* AVAudioSessionSpikeApp.swift */,
+				7A8B0DE24F8DAE2756008BD8 /* ContentView.swift */,
+				3487F7FDA7F32D27890A94B2 /* Info.plist */,
+				64F52911D4A6CE6F6D3DD707 /* WakeAudioController.swift */,
+			);
+			path = AVAudioSessionSpike;
+			sourceTree = "<group>";
+		};
+		ADAC6BAC249451DD9750B729 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C24503DBA25B73E0FEE96F7B /* AVAudioSessionSpike.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BFEC40DE304536A23BDC7B4B /* AVAudioSessionSpike */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BA7339764B727C6C37479B5 /* Build configuration list for PBXNativeTarget "AVAudioSessionSpike" */;
+			buildPhases = (
+				B2ED37E7B0E235CDD23664AC /* Sources */,
+				2BC1FC4D731D1B58BD3B02BC /* Resources */,
+				B19D3071FDDEB75909B4B8D1 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AVAudioSessionSpike;
+			packageProductDependencies = (
+			);
+			productName = AVAudioSessionSpike;
+			productReference = C24503DBA25B73E0FEE96F7B /* AVAudioSessionSpike.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DF3583B102F10A5A2CF06229 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					BFEC40DE304536A23BDC7B4B = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 30F33A79116B6139DE43167E /* Build configuration list for PBXProject "AVAudioSessionSpike" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 21A56110AC4CC50B321AA59D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = ADAC6BAC249451DD9750B729 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BFEC40DE304536A23BDC7B4B /* AVAudioSessionSpike */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2BC1FC4D731D1B58BD3B02BC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A114136ADCAB04AFED2612D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B2ED37E7B0E235CDD23664AC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF20EAEC92281F1EAA17D0D0 /* AVAudioSessionSpikeApp.swift in Sources */,
+				15995CE33F393462150F395C /* ContentView.swift in Sources */,
+				6FC6583862423A32B748AEBF /* WakeAudioController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		191218F32B537152F7C36037 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		79D179842163B95B238A75FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AVAudioSessionSpike/AVAudioSessionSpike.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AVAudioSessionSpike/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qiyama.avaudiosessionspike;
+				PRODUCT_NAME = AVAudioSessionSpike;
+				SDKROOT = iphoneos;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		81C554B3DA3C1A18B9A47CCB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		F3E0483F6CA7B58A1509EEE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AVAudioSessionSpike/AVAudioSessionSpike.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AVAudioSessionSpike/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qiyama.avaudiosessionspike;
+				PRODUCT_NAME = AVAudioSessionSpike;
+				SDKROOT = iphoneos;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0BA7339764B727C6C37479B5 /* Build configuration list for PBXNativeTarget "AVAudioSessionSpike" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79D179842163B95B238A75FB /* Debug */,
+				F3E0483F6CA7B58A1509EEE5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		30F33A79116B6139DE43167E /* Build configuration list for PBXProject "AVAudioSessionSpike" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				191218F32B537152F7C36037 /* Debug */,
+				81C554B3DA3C1A18B9A47CCB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DF3583B102F10A5A2CF06229 /* Project object */;
+}

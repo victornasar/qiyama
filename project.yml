@@ -1,0 +1,62 @@
+name: Qiyama
+options:
+  bundleIdPrefix: app.qiyama
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+packages:
+  Adhan:
+    url: https://github.com/batoulapps/adhan-swift
+    from: 1.5.0
+settings:
+  base:
+    # Set DEVELOPMENT_TEAM in Xcode Signing, or pass to xcodebuild / scripts/run-native.local.sh
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+schemes:
+  Qiyama:
+    build:
+      targets:
+        Qiyama: all
+    run:
+      config: Debug
+      debugEnabled: false
+    profile:
+      config: Release
+    archive:
+      config: Release
+targets:
+  Qiyama:
+    type: application
+    platform: iOS
+    sources:
+      - path: Qiyama
+        excludes:
+          - "**/*.md"
+          - "Sounds/**"
+      - path: Qiyama/Sounds
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.qiyama.train
+        PRODUCT_NAME: Qiyama
+        INFOPLIST_FILE: Qiyama/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_ENTITLEMENTS: Qiyama/Qiyama.entitlements
+        GENERATE_INFOPLIST_FILE: false
+        CURRENT_PROJECT_VERSION: "1"
+        MARKETING_VERSION: "0.2.0"
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: false
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: false
+    dependencies:
+      - package: Adhan
+      - sdk: AVFoundation.framework
+      - sdk: MediaPlayer.framework
+      - sdk: SwiftUI.framework
+      - sdk: UIKit.framework
+      - sdk: UserNotifications.framework
+      - sdk: CoreImage.framework
+      - sdk: PDFKit.framework
+      - sdk: MapKit.framework

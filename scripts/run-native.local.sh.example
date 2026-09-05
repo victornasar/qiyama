@@ -1,0 +1,4 @@
+# Local device IDs + signing for ./scripts/run-native.sh
+# export QIYAMA_DESTINATION='platform=iOS,id=YOUR_UDID'
+# export QIYAMA_DEVICE_ID='YOUR_COREDEVICE_UUID'
+# export DEVELOPMENT_TEAM='YOUR_TEAM_ID'

@@ -1,0 +1,4 @@
+# Local-only (gitignored). Not read by XcodeGen.
+# Set Signing Team in Xcode, or:
+#   export DEVELOPMENT_TEAM=YOUR_TEAM_ID
+DEVELOPMENT_TEAM=YOUR_TEAM_ID

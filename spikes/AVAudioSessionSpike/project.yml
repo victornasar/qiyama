@@ -1,0 +1,40 @@
+name: AVAudioSessionSpike
+options:
+  bundleIdPrefix: com.qiyama
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+targets:
+  AVAudioSessionSpike:
+    type: application
+    platform: iOS
+    sources:
+      - path: AVAudioSessionSpike
+        excludes:
+          - "**/*.md"
+          - "Sounds"
+    resources:
+      - path: AVAudioSessionSpike/Sounds
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.qiyama.avaudiosessionspike
+        PRODUCT_NAME: AVAudioSessionSpike
+        INFOPLIST_FILE: AVAudioSessionSpike/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_ENTITLEMENTS: AVAudioSessionSpike/AVAudioSessionSpike.entitlements
+        GENERATE_INFOPLIST_FILE: false
+        CURRENT_PROJECT_VERSION: "1"
+        MARKETING_VERSION: "0.1.0"
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: false
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: false
+    dependencies:
+      - sdk: AVFoundation.framework
+      - sdk: MediaPlayer.framework
+      - sdk: SwiftUI.framework
+      - sdk: UIKit.framework

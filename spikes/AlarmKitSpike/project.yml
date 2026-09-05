@@ -1,0 +1,37 @@
+name: AlarmKitSpike
+options:
+  bundleIdPrefix: com.qiyama
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+targets:
+  AlarmKitSpike:
+    type: application
+    platform: iOS
+    sources:
+      - path: AlarmKitSpike
+        excludes:
+          - "**/*.md"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.qiyama.alarmkitspike
+        PRODUCT_NAME: AlarmKitSpike
+        INFOPLIST_FILE: AlarmKitSpike/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_ENTITLEMENTS: AlarmKitSpike/AlarmKitSpike.entitlements
+        GENERATE_INFOPLIST_FILE: false
+        CURRENT_PROJECT_VERSION: "1"
+        MARKETING_VERSION: "0.1.0"
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: false
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: false
+    dependencies:
+      - sdk: AlarmKit.framework
+      - sdk: ActivityKit.framework
+      - sdk: AppIntents.framework
+      - sdk: SwiftUI.framework

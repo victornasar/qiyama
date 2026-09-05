@@ -1,0 +1,33 @@
+# Xcode / macOS
+.DS_Store
+**/DerivedData/
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+timeline.xctimeline
+playground.xcworkspace
+
+# SwiftPM
+.build/
+.swiftpm/
+Package.resolved
+
+# Signing / secrets / machine-local
+*.p8
+*.p12
+*.mobileprovision
+*.cer
+.env
+.env*.local
+project.local.yml
+**/project.local.yml
+scripts/run-native.local.sh
+
+# Misc
+.claude/
+.tmp*
