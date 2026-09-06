@@ -124,6 +124,7 @@ struct WakeView: View {
 
     private func completeProof() {
         keepAudioAlive = false
+        store.silenceActiveAlarm()
         WakeAudioController.shared.stop()
         UINotificationFeedbackGenerator().notificationOccurred(.success)
         if !store.state.practiceActive {

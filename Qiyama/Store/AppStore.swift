@@ -4,8 +4,16 @@ import Observation
 @MainActor
 @Observable
 final class AppStore {
+    /// Lead time for the practice run's real AlarmKit alarm — long enough to background
+    /// the app and lock the screen before it fires.
+    static let practiceAlarmLeadSeconds: TimeInterval = 15
+
     private(set) var ready = false
     var state: AppState
+    /// Practice's AlarmKit alarm is a throwaway test fire, not tied to any DayOutcome —
+    /// keeping it off `state` avoids ever clobbering the real overnight alarm's id, since
+    /// practice reuses tonight's dateKey.
+    private var practiceAlarmId: String?
 
     var tonight: DayOutcome {
         let result = Schedule.ensureTonightSchedule(
@@ -33,8 +41,8 @@ final class AppStore {
             assistanceLevel: loaded.progress.assistanceLevel
         )
         var day = scheduled.day
-        let notificationId = await WakeNotifications.schedule(for: day)
-        day.notificationId = notificationId
+        day.notificationId = await WakeNotifications.schedule(for: day)
+        day.alarmId = await WakeAlarms.schedule(for: day)
         var days = scheduled.days
         days[day.dateKey] = day
         loaded.days = days
@@ -65,8 +73,10 @@ final class AppStore {
             assistanceLevel: state.progress.assistanceLevel
         )
         await WakeNotifications.cancel(state.days[scheduled.day.dateKey]?.notificationId)
+        WakeAlarms.cancel(state.days[scheduled.day.dateKey]?.alarmId)
         var day = scheduled.day
         day.notificationId = await WakeNotifications.schedule(for: day)
+        day.alarmId = await WakeAlarms.schedule(for: day)
         var days = scheduled.days
         days[day.dateKey] = day
         persist(AppState(
@@ -119,6 +129,7 @@ final class AppStore {
         )
         var day = scheduled.day
         day.notificationId = await WakeNotifications.schedule(for: day)
+        day.alarmId = await WakeAlarms.schedule(for: day)
         var days = scheduled.days
         days[day.dateKey] = day
         persist(AppState(
@@ -138,24 +149,38 @@ final class AppStore {
         persist(next)
     }
 
-    func startPracticeWake() {
+    func startPracticeWake() async {
         let day = tonight
         WakeAudioController.shared.start()
+        practiceAlarmId = await WakeAlarms.scheduleTest(
+            dateKey: day.dateKey,
+            secondsFromNow: Self.practiceAlarmLeadSeconds,
+            previousId: practiceAlarmId
+        )
         var next = state
         next.interventionActiveDateKey = day.dateKey
         next.practiceActive = true
         persist(next)
     }
 
+    /// Silence whichever alarm is behind the current intervention, without touching
+    /// intervention/practice state — for the moment the user proves they're up (scan
+    /// accepted) but hasn't tapped "Done" yet.
+    func silenceActiveAlarm() {
+        if state.practiceActive {
+            WakeAlarms.silence(practiceAlarmId)
+        } else if let dateKey = state.interventionActiveDateKey {
+            WakeAlarms.silence(state.days[dateKey]?.alarmId)
+        }
+    }
+
     func endPractice() {
-        WakeAudioController.shared.stop()
-        var next = state
-        next.interventionActiveDateKey = nil
-        next.practiceActive = false
-        persist(next)
+        clearIntervention()
     }
 
     func clearIntervention() {
+        silenceActiveAlarm()
+        practiceAlarmId = nil
         WakeAudioController.shared.stop()
         var next = state
         next.interventionActiveDateKey = nil
@@ -196,6 +221,7 @@ final class AppStore {
         if prayed && !alreadyCounted {
             progress = Progression.applyPrayerConfirm(progress: progress, prayed: true)
         }
+        WakeAlarms.silence(day.alarmId)
         WakeAudioController.shared.stop()
         persist(AppState(
             settings: state.settings,
@@ -219,6 +245,7 @@ final class AppStore {
             progress: state.progress,
             programStart: state.settings.programStartDate
         )
+        WakeAlarms.silence(day.alarmId)
         WakeAudioController.shared.stop()
         persist(AppState(
             settings: state.settings,

@@ -60,3 +60,5 @@ targets:
       - sdk: CoreImage.framework
       - sdk: PDFKit.framework
       - sdk: MapKit.framework
+      - sdk: AlarmKit.framework
+      - sdk: AppIntents.framework

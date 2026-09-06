@@ -102,6 +102,7 @@ struct DayOutcome: Codable, Equatable, Identifiable {
     var prayed: Bool?
     var missed: Bool
     var notificationId: String?
+    var alarmId: String?
 }
 
 struct ProgressSnapshot: Codable, Equatable {

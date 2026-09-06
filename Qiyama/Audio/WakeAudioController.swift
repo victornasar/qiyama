@@ -1,3 +1,4 @@
+import AudioToolbox
 import AVFoundation
 import Foundation
 import MediaPlayer
@@ -6,6 +7,17 @@ import UIKit
 /// Native wake audio: exclusive playback session, no Now Playing controls,
 /// interruption / route-change auto-resume.
 /// Soft wake: hardware volume pinned, player ramps 0% → 100% of that pin (~25% absolute).
+///
+/// This whole controller is a supplemental layer, not the wake guarantee — see WakeAlarms.
+/// The volume pin is enforced continuously (KVO on outputVolume + watchdog backstop), but
+/// it's a UIKit trick (a hidden MPVolumeView slider) and iOS mostly stops honoring
+/// programmatic slider changes once the screen locks. There is no public API for a
+/// backgrounded app to force its own media output volume — so if the phone reaches 0 while
+/// locked, the forest goes silent, full stop, and no amount of KVO/audio-session cleverness
+/// changes that. The Taptic Engine isn't gated by the volume slider at all, so silence below
+/// `silenceThreshold` engages a repeating vibration instead. Treat both as best-effort: the
+/// thing that's actually supposed to survive a silenced, locked phone is the AlarmKit alarm
+/// in WakeAlarms, which plays through the system alert channel instead of this one.
 @MainActor
 @Observable
 final class WakeAudioController: NSObject {
@@ -17,6 +29,9 @@ final class WakeAudioController: NSObject {
     static let volumeFloor: Float = 0
     static let volumeMax: Float = 1.0
     static let rampSeconds: TimeInterval = 60
+    /// Below this, treat the device as silenced and switch to the vibration fallback.
+    static let silenceThreshold: Float = 0.02
+    static let vibrationInterval: TimeInterval = 1.2
 
     private(set) var isRunning = false
     private(set) var isPlaying = false
@@ -32,6 +47,9 @@ final class WakeAudioController: NSObject {
     private var observersInstalled = false
     private var savedHardwareVolume: Float?
     private var volumeHostView: MPVolumeView?
+    private var outputVolumeObservation: NSKeyValueObservation?
+    private var vibrationTimer: Timer?
+    private var vibrationActive = false
 
     override private init() {
         super.init()
@@ -184,6 +202,24 @@ final class WakeAudioController: NSObject {
             name: AVAudioSession.mediaServicesWereResetNotification,
             object: AVAudioSession.sharedInstance()
         )
+
+        // Hardware volume buttons / Control Center are the one bypass a hidden slider
+        // can't preempt — catch the change after the fact and snap it straight back.
+        outputVolumeObservation = AVAudioSession.sharedInstance().observe(
+            \.outputVolume,
+            options: [.new]
+        ) { [weak self] _, _ in
+            Task { @MainActor in
+                self?.enforceHardwareVolumeLock()
+            }
+        }
+    }
+
+    private func enforceHardwareVolumeLock() {
+        guard isRunning, !allowStop else { return }
+        setHardwareVolume(Self.hardwareVolumeTarget)
+        updateVibrationFallback()
+        log("hardware volume tamper — re-pinned to \(Self.hardwareVolumeTarget)")
     }
 
     @objc private func handleInterruption(_ note: Notification) {
@@ -282,6 +318,8 @@ final class WakeAudioController: NSObject {
 
     private func enforcePlayback() {
         guard isRunning, !allowStop, let player else { return }
+        setHardwareVolume(Self.hardwareVolumeTarget)
+        updateVibrationFallback()
         if player.volume < currentVolume {
             player.volume = currentVolume
         }
@@ -302,6 +340,30 @@ final class WakeAudioController: NSObject {
         rampTimer = nil
         watchdog?.invalidate()
         watchdog = nil
+        vibrationTimer?.invalidate()
+        vibrationTimer = nil
+        vibrationActive = false
+    }
+
+    /// Volume-slider tampering doesn't reach the Taptic Engine — buzz on a loop for as
+    /// long as the device reads silent, stand down the moment audio is audible again.
+    private func updateVibrationFallback() {
+        let silenced = AVAudioSession.sharedInstance().outputVolume <= Self.silenceThreshold
+        if silenced, !vibrationActive {
+            vibrationActive = true
+            log("output silenced — vibration fallback engaged")
+            vibrationTimer?.invalidate()
+            let timer = Timer.scheduledTimer(withTimeInterval: Self.vibrationInterval, repeats: true) { _ in
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+            }
+            vibrationTimer = timer
+            timer.fire()
+        } else if !silenced, vibrationActive {
+            vibrationActive = false
+            vibrationTimer?.invalidate()
+            vibrationTimer = nil
+            log("output audible again — vibration fallback stood down")
+        }
     }
 
     // MARK: - Hardware volume pin

@@ -31,6 +31,7 @@
 		9663A520FD28ABC6EF14F5D1 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF3584F0028248F7DED9C2BD /* CoreImage.framework */; };
 		996AACD12CBBC36305205780 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BB70D680075226A066C19D8 /* AVFoundation.framework */; };
 		9DFCC5162E67A7EC378023BC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63EAD5BE6981817F6D94A9A /* SettingsView.swift */; };
+		9E575B3326E6E135C20C051B /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0CBFD1053F01CE3B434FE80 /* AppIntents.framework */; };
 		A49A944CF242AE1D0EFA1759 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EFA2A471AE220597484BDDE /* UIKit.framework */; };
 		CA6C1547A080789AB6CC3748 /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6738AEAA8065D7228911B862 /* AppStore.swift */; };
 		D0B910F7DC0D68156E4CF60F /* MarkFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79EEB3BF2271B0F8E89EBE9 /* MarkFactory.swift */; };
@@ -41,6 +42,8 @@
 		E8CB22FD388DDA60DB1775F9 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09CCB9CAD3F8DFCC650B0101 /* SwiftUI.framework */; };
 		EA47A9DA57320F8F4430A81A /* QiyamaTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26FBF6FF3CE26A1EDAEAC8D /* QiyamaTheme.swift */; };
 		F122AA064F7AF7DC7987935B /* WakeNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190AAE3CE241CEDC43C14206 /* WakeNotifications.swift */; };
+		F7C48D064D67319C9B9034BD /* WakeAlarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9418FC1B3EB24489510A78 /* WakeAlarms.swift */; };
+		F7FCF40F64A8D7BB2BC5AE21 /* AlarmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76B31D2EF4E60D2B7A39CD87 /* AlarmKit.framework */; };
 		FE11E4214A8CD56ED3E538AA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA94D8EBC5DCB50CB483668D /* UserNotifications.framework */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +61,7 @@
 		656AFEA5C4547867071AB9C7 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		65CBFE8071BD3AB4E7820E8D /* CitySearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitySearchField.swift; sourceTree = "<group>"; };
 		6738AEAA8065D7228911B862 /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		76B31D2EF4E60D2B7A39CD87 /* AlarmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlarmKit.framework; path = System/Library/Frameworks/AlarmKit.framework; sourceTree = SDKROOT; };
 		80F76A71F7CA22B6856C8C8F /* WakeAudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakeAudioController.swift; sourceTree = "<group>"; };
 		8105C53604FE15ED49BDB485 /* Progression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
 		8B8211A4BBFF3FFEDB6F19F6 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -71,14 +75,16 @@
 		BC7B7BEA9A2BBE957F2FB4AE /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		BF3584F0028248F7DED9C2BD /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		C20CBDAE221E21643C7CB663 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CA9418FC1B3EB24489510A78 /* WakeAlarms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakeAlarms.swift; sourceTree = "<group>"; };
 		CA94D8EBC5DCB50CB483668D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		CD50621F1CF84311B4FC54FF /* Qiyama.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qiyama.entitlements; sourceTree = "<group>"; };
 		CFEB37F282E8E4531F6975F5 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		D0006DE914BDC2B99E3F9C0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		D79EEB3BF2271B0F8E89EBE9 /* MarkFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkFactory.swift; sourceTree = "<group>"; };
 		DA8D3819C029E3C496EA7A18 /* ProgressScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressScreen.swift; sourceTree = "<group>"; };
+		E0CBFD1053F01CE3B434FE80 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
 		E26FBF6FF3CE26A1EDAEAC8D /* QiyamaTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiyamaTheme.swift; sourceTree = "<group>"; };
-		E4AD7E35A55FE25F37CEA5D5 /* Qiyama.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Qiyama.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4AD7E35A55FE25F37CEA5D5 /* Qiyama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qiyama.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EABC28673C7ABE63C126455A /* QR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QR.swift; sourceTree = "<group>"; };
 		F26BB09B8AE2B3EFD1E6BD46 /* OffsetControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetControl.swift; sourceTree = "<group>"; };
 		F86DFA182FBF6301F690C86E /* NorthAmericaCities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorthAmericaCities.swift; sourceTree = "<group>"; };
@@ -98,6 +104,8 @@
 				9663A520FD28ABC6EF14F5D1 /* CoreImage.framework in Frameworks */,
 				3F147E2106351AC7F4AE5497 /* PDFKit.framework in Frameworks */,
 				327D20ED00B22104546CCDE8 /* MapKit.framework in Frameworks */,
+				F7FCF40F64A8D7BB2BC5AE21 /* AlarmKit.framework in Frameworks */,
+				9E575B3326E6E135C20C051B /* AppIntents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +115,8 @@
 		021CD11A2674A2DF588B927F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				76B31D2EF4E60D2B7A39CD87 /* AlarmKit.framework */,
+				E0CBFD1053F01CE3B434FE80 /* AppIntents.framework */,
 				3BB70D680075226A066C19D8 /* AVFoundation.framework */,
 				BF3584F0028248F7DED9C2BD /* CoreImage.framework */,
 				D0006DE914BDC2B99E3F9C0B /* MapKit.framework */,
@@ -187,6 +197,7 @@
 		5014006F19FD6E2097735928 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				CA9418FC1B3EB24489510A78 /* WakeAlarms.swift */,
 				190AAE3CE241CEDC43C14206 /* WakeNotifications.swift */,
 			);
 			path = Notifications;
@@ -388,6 +399,7 @@
 				8147EE45384B56D779531260 /* Schedule.swift in Sources */,
 				9DFCC5162E67A7EC378023BC /* SettingsView.swift in Sources */,
 				69408088241ECBDEFD431F2E /* SetupView.swift in Sources */,
+				F7C48D064D67319C9B9034BD /* WakeAlarms.swift in Sources */,
 				316708AB92AE0C9F4D57DEC1 /* WakeAudioController.swift in Sources */,
 				64F135AB9AF739B0BE3E51B4 /* WakeFlowView.swift in Sources */,
 				F122AA064F7AF7DC7987935B /* WakeNotifications.swift in Sources */,

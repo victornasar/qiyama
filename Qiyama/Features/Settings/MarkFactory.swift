@@ -21,22 +21,8 @@ enum MarkFactory {
         let renderer = UIGraphicsPDFRenderer(bounds: page)
         return renderer.pdfData { ctx in
             ctx.beginPage()
-            let title = "Qiyama" as NSString
-            title.draw(at: CGPoint(x: 72, y: 72), withAttributes: [
-                .font: UIFont.systemFont(ofSize: 28, weight: .semibold),
-            ])
-            let body = "Place away from the bed. Scan in the morning to prove you got up." as NSString
-            body.draw(in: CGRect(x: 72, y: 120, width: 468, height: 60), withAttributes: [
-                .font: UIFont.systemFont(ofSize: 14),
-                .foregroundColor: UIColor.darkGray,
-            ])
-            let size: CGFloat = 200
-            qr.draw(in: CGRect(x: (612 - size) / 2, y: 220, width: size, height: size))
-            let payloadLine = payload as NSString
-            let pw = payloadLine.size(withAttributes: [.font: UIFont.monospacedSystemFont(ofSize: 12, weight: .regular)]).width
-            payloadLine.draw(at: CGPoint(x: (612 - pw) / 2, y: 440), withAttributes: [
-                .font: UIFont.monospacedSystemFont(ofSize: 12, weight: .regular),
-            ])
+            let size: CGFloat = 96
+            qr.draw(in: CGRect(x: 36, y: 36, width: size, height: size))
         }
     }
 }

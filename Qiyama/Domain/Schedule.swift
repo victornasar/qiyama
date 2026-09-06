@@ -55,7 +55,8 @@ enum Schedule {
             outOfBedAt: existing?.outOfBedAt,
             prayed: existing?.prayed,
             missed: existing?.missed ?? false,
-            notificationId: existing?.notificationId
+            notificationId: existing?.notificationId,
+            alarmId: existing?.alarmId
         )
     }
 

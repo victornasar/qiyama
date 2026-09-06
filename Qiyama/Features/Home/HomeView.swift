@@ -87,7 +87,7 @@ struct HomeView: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     Button {
-                        store.startPracticeWake()
+                        Task { await store.startPracticeWake() }
                     } label: {
                         Text("Practice wake now")
                             .font(QiyamaTheme.body(15, weight: .medium))

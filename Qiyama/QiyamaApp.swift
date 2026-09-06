@@ -5,6 +5,7 @@ import UserNotifications
 struct QiyamaApp: App {
     @State private var store = AppStore()
     @State private var delegate = NotificationDelegate()
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
         WindowGroup {
@@ -28,6 +29,13 @@ struct QiyamaApp: App {
                 UNUserNotificationCenter.current().delegate = delegate
                 delegate.store = store
                 await store.bootstrap()
+            }
+            .onChange(of: scenePhase) { _, phase in
+                // Re-check the wake window on every foreground, not just cold launch — this
+                // is what actually catches the AlarmKit "I'm up" open action, and covers the
+                // plain case of reopening the app manually after the alarm already fired.
+                guard phase == .active, store.ready else { return }
+                store.maybeAutoActivate()
             }
             .preferredColorScheme(.light)
         }
