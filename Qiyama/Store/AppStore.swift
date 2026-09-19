@@ -34,18 +34,21 @@ final class AppStore {
 
     func bootstrap() async {
         var loaded = Persistence.load()
-        let scheduled = Schedule.ensureTonightSchedule(
-            settings: loaded.settings,
-            days: loaded.days,
-            phase: loaded.progress.phase,
-            assistanceLevel: loaded.progress.assistanceLevel
-        )
-        var day = scheduled.day
-        day.notificationId = await WakeNotifications.schedule(for: day)
-        day.alarmId = await WakeAlarms.schedule(for: day)
-        var days = scheduled.days
-        days[day.dateKey] = day
-        loaded.days = days
+        // Avoid scheduling (and any permission side-effects) during setup.
+        if loaded.settings.onboardingComplete {
+            let scheduled = Schedule.ensureTonightSchedule(
+                settings: loaded.settings,
+                days: loaded.days,
+                phase: loaded.progress.phase,
+                assistanceLevel: loaded.progress.assistanceLevel
+            )
+            var day = scheduled.day
+            day.notificationId = await WakeNotifications.schedule(for: day)
+            day.alarmId = await WakeAlarms.schedule(for: day)
+            var days = scheduled.days
+            days[day.dateKey] = day
+            loaded.days = days
+        }
         loaded.progress.programDay = Progression.programDayNumber(loaded.settings.programStartDate)
         loaded.practiceActive = false
         state = loaded
@@ -66,6 +69,16 @@ final class AppStore {
     func updateSettings(_ patch: (inout Settings) -> Void) async {
         var settings = state.settings
         patch(&settings)
+        guard settings.onboardingComplete else {
+            persist(AppState(
+                settings: settings,
+                days: state.days,
+                progress: state.progress,
+                interventionActiveDateKey: state.interventionActiveDateKey,
+                practiceActive: state.practiceActive
+            ))
+            return
+        }
         let scheduled = Schedule.ensureTonightSchedule(
             settings: settings,
             days: state.days,
@@ -102,6 +115,7 @@ final class AppStore {
         }
     }
 
+    #if DEBUG
     func restartOnboarding() {
         WakeAudioController.shared.stop()
         var settings = QR.defaultSettings()
@@ -114,8 +128,12 @@ final class AppStore {
             practiceActive: false
         ))
     }
+    #endif
 
     func startProgram() async {
+        // AlarmKit is required for wake. Notifications remain optional (4.5.4).
+        guard WakeAlarms.isAuthorized else { return }
+
         let today = Schedule.dateKey(from: Date())
         var settings = state.settings
         settings.programStartDate = today

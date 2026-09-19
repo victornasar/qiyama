@@ -2,15 +2,32 @@ import Foundation
 import UserNotifications
 
 enum WakeNotifications {
-    static func ensureSetup() async -> Bool {
-        let center = UNUserNotificationCenter.current()
-        let settings = await center.notificationSettings()
-        switch settings.authorizationStatus {
+    static func authorizationStatus() async -> UNAuthorizationStatus {
+        await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
+    }
+
+    static func isAuthorized() async -> Bool {
+        switch await authorizationStatus() {
+        case .authorized, .provisional, .ephemeral:
+            return true
+        default:
+            return false
+        }
+    }
+
+    static func isDenied() async -> Bool {
+        await authorizationStatus() == .denied
+    }
+
+    /// Explicit opt-in only (permission toggle). Never call from schedule/bootstrap.
+    static func requestAuthorization() async -> Bool {
+        switch await authorizationStatus() {
         case .authorized, .provisional, .ephemeral:
             return true
         case .notDetermined:
             do {
-                return try await center.requestAuthorization(options: [.alert, .sound, .badge])
+                return try await UNUserNotificationCenter.current()
+                    .requestAuthorization(options: [.alert, .sound, .badge])
             } catch {
                 return false
             }
@@ -25,8 +42,8 @@ enum WakeNotifications {
     }
 
     static func schedule(for day: DayOutcome) async -> String? {
-        let granted = await ensureSetup()
-        guard granted else { return nil }
+        // Optional — never prompt here. Guideline 4.5.4: notifications must not be required.
+        guard await isAuthorized() else { return nil }
         await cancel(day.notificationId)
 
         guard let wakeAt = ISO8601DateFormatter.qiyamaDate(from: day.wakeAtISO) else { return nil }

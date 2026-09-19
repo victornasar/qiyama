@@ -5,7 +5,9 @@ struct SettingsView: View {
     @Environment(AppStore.self) private var store
     @State private var path = NavigationPath()
     @State private var showReplaceConfirm = false
+    #if DEBUG
     @State private var showRestartConfirm = false
+    #endif
     @State private var showTestScan = false
     @State private var showAdoptScan = false
     @State private var shareItems: [Any] = []
@@ -83,8 +85,15 @@ struct SettingsView: View {
                             icon: "calendar",
                             label: "Length",
                             value: "\(store.state.settings.programLengthDays) days",
-                            showBorder: true
+                            showBorder: {
+                                #if DEBUG
+                                true
+                                #else
+                                false
+                                #endif
+                            }()
                         )
+                        #if DEBUG
                         ProfileRow(
                             icon: "arrow.counterclockwise",
                             label: "Restart onboarding",
@@ -93,6 +102,7 @@ struct SettingsView: View {
                         ) {
                             showRestartConfirm = true
                         }
+                        #endif
                     }
 
                     sectionCard(title: "About") {
@@ -128,6 +138,7 @@ struct SettingsView: View {
         } message: {
             Text("Old prints will stop working.")
         }
+        #if DEBUG
         .confirmationDialog("Restart onboarding?", isPresented: $showRestartConfirm, titleVisibility: .visible) {
             Button("Restart", role: .destructive) {
                 store.restartOnboarding()
@@ -136,6 +147,7 @@ struct SettingsView: View {
         } message: {
             Text("Clears mornings and progress on this phone. Your mark token is kept.")
         }
+        #endif
         .sheet(isPresented: $showShare) {
             ShareSheet(items: shareItems)
         }

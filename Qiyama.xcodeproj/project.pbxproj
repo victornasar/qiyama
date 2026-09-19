@@ -416,14 +416,15 @@
 				CODE_SIGN_ENTITLEMENTS = Qiyama/Qiyama.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = XHTGG94645;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Qiyama/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.qiyama.train;
 				PRODUCT_NAME = Qiyama;
 				SDKROOT = iphoneos;
@@ -504,14 +505,15 @@
 				CODE_SIGN_ENTITLEMENTS = Qiyama/Qiyama.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = XHTGG94645;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Qiyama/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.qiyama.train;
 				PRODUCT_NAME = Qiyama;
 				SDKROOT = iphoneos;

@@ -1,8 +1,10 @@
 import SwiftUI
+import UIKit
 import UserNotifications
 
 @main
 struct QiyamaApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var store = AppStore()
     @State private var delegate = NotificationDelegate()
     @Environment(\.scenePhase) private var scenePhase
@@ -39,6 +41,17 @@ struct QiyamaApp: App {
             }
             .preferredColorScheme(.light)
         }
+    }
+}
+
+/// Info.plist lists all orientations (required for iPad multitasking / App Store validation).
+/// Keep the UI portrait on iPhone via the app delegate mask.
+final class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        supportedInterfaceOrientationsFor window: UIWindow?
+    ) -> UIInterfaceOrientationMask {
+        .portrait
     }
 }
 

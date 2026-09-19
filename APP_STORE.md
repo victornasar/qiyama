@@ -52,7 +52,7 @@ Morning proof is physical. Snooze is not the product.
 WHAT YOU GET
 
 • Wake time tied to Fajr for your location
-• System alarms and notifications (both required)
+• System alarms (required) and optional notifications
 • A wake screen that asks you to walk and scan
 • Soft forest sound while you get up
 • Progress by phase — not streaks, XP, or badges
@@ -68,7 +68,7 @@ REQUIREMENTS
 
 • iPhone on iOS 26 or later
 • Permission for Alarms & Timers
-• Permission for Notifications
+• Optional permission for Notifications
 • Camera access to scan your mark
 • A printed mark somewhere you must walk to
 
@@ -97,7 +97,13 @@ tahajjud,fajr,qiyam,wake,alarm,muslim,salah,suhoor,discipline,morning,prayer
 
 ---
 
-## What’s New (1.0.0)
+## What’s New (1.0.0 build 2)
+
+```
+Notifications are optional. You can finish setup and use Qiyama with Alarms & Timers only. A notification reminder can still be turned on if you want it.
+```
+
+## What’s New (1.0.0 build 1)
 
 ```
 First release.
@@ -131,15 +137,17 @@ Paste into **App Review Information → Notes**.
 Qiyama is a Tahajjud wake-training app.
 
 Demo path:
-1. Complete onboarding (city, wake offset, allow Alarms + Notifications, print or adopt a mark).
-2. Home shows tonight’s Fajr and wake time.
-3. Profile → Test scan / Practice (if available) or wait for wake window to exercise the wake flow.
+1. Complete onboarding (city, wake offset, allow Alarms & Timers, print a mark).
+2. Notifications are optional — leave them off and Continue still works.
+3. Home shows tonight’s Fajr and wake time.
 4. Wake proof requires scanning the printed QR mark away from the bed.
 
 Permissions:
 • Alarms & Timers — required; system AlarmKit wake that rings when locked/silent
-• Notifications — required; wake reminder
+• Notifications — optional; supplemental reminder only
 • Camera — required; scan the mark to confirm out of bed
+
+Guideline 4.5.4: push/local notification permission is never required to finish setup or use the app. AlarmKit is the authoritative wake path.
 
 No login. No account. No subscriptions in v1.0.0.
 Minimum iOS 26.
@@ -163,7 +171,7 @@ Minimum iOS 26.
 | Field | Value |
 |-------|-------|
 | Version | 1.0.0 |
-| Build | 1 |
+| Build | 2 |
 | Copyright | `2026 [Your Legal Name or Company]` |
 | Trade representative contact (if needed) | `[Same as review contact]` |
 

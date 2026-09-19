@@ -114,7 +114,7 @@ final class CitySearchModel: NSObject, MKLocalSearchCompleterDelegate {
     }
 
     /// Extra guard: drop street-like titles that slip past the address filter.
-    private static func looksLikeCity(_ completion: MKLocalSearchCompletion) -> Bool {
+    nonisolated private static func looksLikeCity(_ completion: MKLocalSearchCompletion) -> Bool {
         let title = completion.title.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !title.isEmpty else { return false }
         if title.rangeOfCharacter(from: .decimalDigits) != nil { return false }

@@ -15,6 +15,14 @@ enum WakeAlarms {
         let dateKey: String
     }
 
+    static var isAuthorized: Bool {
+        AlarmManager.shared.authorizationState == .authorized
+    }
+
+    static var isDenied: Bool {
+        AlarmManager.shared.authorizationState == .denied
+    }
+
     static func ensureAuthorized() async -> Bool {
         let manager = AlarmManager.shared
         switch manager.authorizationState {
@@ -58,8 +66,8 @@ enum WakeAlarms {
     }
 
     private static func scheduleAlarm(at wakeAt: Date, dateKey: String, previousId: String?) async -> String? {
-        let authorized = await ensureAuthorized()
-        guard authorized else { return nil }
+        // Never prompt from schedule — AlarmKit auth is an explicit onboarding action.
+        guard isAuthorized else { return nil }
         cancel(previousId)
 
         let id = UUID()

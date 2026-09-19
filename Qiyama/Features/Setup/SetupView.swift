@@ -1,7 +1,12 @@
 import SwiftUI
+import UIKit
 
 struct SetupView: View {
     @Environment(AppStore.self) private var store
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.openURL) private var openURL
+
+    /// 0 intro · 1 city · 2 offset · 3 permissions · 4 mark
     @State private var step = 0
     @State private var location: LocationChoice?
     @State private var offset = OffsetMinutes.default
@@ -11,18 +16,30 @@ struct SetupView: View {
     @State private var printData: Data?
     @State private var showPrint = false
     @State private var didPrintOrShare = false
+    @State private var alarmsAllowed = false
+    @State private var notificationsAllowed = false
+    @State private var notificationsDenied = false
+    @State private var requestingPermissions = false
+
+    private let setupStepCount = 4
+
+    /// Alarms are required. Notifications are optional (Guideline 4.5.4).
+    private var canContinuePermissions: Bool { alarmsAllowed }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("\(step + 1) of 3")
-                .font(QiyamaTheme.body(13))
-                .foregroundStyle(QiyamaTheme.slate)
-                .padding(.top, 8)
+            if step > 0 {
+                onboardingProgress
+                    .padding(.top, 8)
+                    .padding(.bottom, 4)
+            }
 
             Group {
                 switch step {
-                case 0: locationStep
-                case 1: offsetStep
+                case 0: introStep
+                case 1: locationStep
+                case 2: offsetStep
+                case 3: permissionsStep
                 default: markStep
                 }
             }
@@ -34,19 +51,16 @@ struct SetupView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(QiyamaTheme.paper.ignoresSafeArea())
         .onAppear {
-            let s = store.state.settings
-            location = LocationChoice(
-                id: s.locationId,
-                label: s.locationLabel,
-                latitude: s.latitude,
-                longitude: s.longitude,
-                timeZone: s.timeZone
-            )
-            offset = OffsetMinutes.clamp(s.offsetMinutes)
+            Task { await refreshPermissions() }
+            offset = OffsetMinutes.clamp(store.state.settings.offsetMinutes)
             refreshWake()
         }
         .onChange(of: offset) { _, _ in refreshWake() }
         .onChange(of: location) { _, _ in refreshWake() }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            Task { await refreshPermissions() }
+        }
         .sheet(isPresented: $showShare) {
             ShareSheet(items: shareItems)
         }
@@ -55,6 +69,160 @@ struct SetupView: View {
                 PrintMarkView(data: printData)
                     .frame(width: 0, height: 0)
                     .onAppear { showPrint = false }
+            }
+        }
+    }
+
+    private var onboardingProgress: some View {
+        let index = max(0, step - 1)
+        let fraction = Double(index + 1) / Double(setupStepCount)
+        return VStack(alignment: .leading, spacing: 8) {
+            Text("\(index + 1) of \(setupStepCount)")
+                .font(QiyamaTheme.body(13))
+                .foregroundStyle(QiyamaTheme.slate)
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Rectangle().fill(QiyamaTheme.line)
+                    Rectangle()
+                        .fill(QiyamaTheme.lantern)
+                        .frame(width: max(4, geo.size.width * fraction))
+                }
+            }
+            .frame(height: 3)
+        }
+    }
+
+    private var introStep: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Spacer(minLength: 40)
+            Text("Qiyama")
+                .font(QiyamaTheme.display(44, weight: .semibold))
+                .foregroundStyle(QiyamaTheme.ink)
+
+            Text("Wake before Fajr.")
+                .font(QiyamaTheme.display(28, weight: .medium))
+                .foregroundStyle(QiyamaTheme.ink)
+
+            Text("Walk to a mark away from the bed. That is the whole product — then slowly stop needing the app.")
+                .font(QiyamaTheme.body(16))
+                .foregroundStyle(QiyamaTheme.slate)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Spacer()
+        }
+    }
+
+    private var permissionsStep: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("How Qiyama wakes you")
+                    .font(QiyamaTheme.display(30, weight: .semibold))
+                    .foregroundStyle(QiyamaTheme.ink)
+                Text("At \(wakeText.isEmpty ? "wake time" : wakeText), Qiyama has to reach you even if the phone is locked, silent, or the app is closed. Turn on alarms to continue.")
+                    .font(QiyamaTheme.body(15))
+                    .foregroundStyle(QiyamaTheme.slate)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.top, 16)
+
+            VStack(spacing: 0) {
+                permissionToggleRow(
+                    title: "Alarms & timers",
+                    detail: "Required. Rings through lock screen and silent mode.",
+                    isOn: alarmsAllowed,
+                    denied: WakeAlarms.isDenied,
+                    optional: false,
+                    showBorder: true
+                ) {
+                    await toggleAlarms()
+                }
+                permissionToggleRow(
+                    title: "Notifications",
+                    detail: "Optional. A reminder when it is time to walk to your mark.",
+                    isOn: notificationsAllowed,
+                    denied: notificationsDenied,
+                    optional: true,
+                    showBorder: false
+                ) {
+                    await toggleNotifications()
+                }
+            }
+            .overlay(RoundedRectangle(cornerRadius: 14).stroke(QiyamaTheme.line, lineWidth: 1))
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .padding(.top, 4)
+
+            if WakeAlarms.isDenied && !alarmsAllowed {
+                Text("Alarms are off in Settings. Turn them on for Qiyama, then return here.")
+                    .font(QiyamaTheme.body(14))
+                    .foregroundStyle(QiyamaTheme.miss)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer()
+        }
+    }
+
+    private func permissionToggleRow(
+        title: String,
+        detail: String,
+        isOn: Bool,
+        denied: Bool,
+        optional: Bool,
+        showBorder: Bool,
+        onToggle: @escaping () async -> Void
+    ) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 8) {
+                    Text(title)
+                        .font(QiyamaTheme.body(16, weight: .semibold))
+                        .foregroundStyle(QiyamaTheme.ink)
+                    if optional {
+                        Text("Optional")
+                            .font(QiyamaTheme.body(12, weight: .medium))
+                            .foregroundStyle(QiyamaTheme.slate)
+                    }
+                }
+                Text(detail)
+                    .font(QiyamaTheme.body(13))
+                    .foregroundStyle(QiyamaTheme.slate)
+                    .fixedSize(horizontal: false, vertical: true)
+                if denied && !isOn {
+                    Button("Open Settings") {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            openURL(url)
+                        }
+                    }
+                    .font(QiyamaTheme.body(13, weight: .medium))
+                    .foregroundStyle(QiyamaTheme.lantern)
+                    .buttonStyle(.plain)
+                    .padding(.top, 2)
+                }
+            }
+            Spacer(minLength: 8)
+            Toggle("", isOn: Binding(
+                get: { isOn },
+                set: { newValue in
+                    guard newValue != isOn else { return }
+                    if !newValue {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            openURL(url)
+                        }
+                        return
+                    }
+                    Task { await onToggle() }
+                }
+            ))
+            .labelsHidden()
+            .tint(QiyamaTheme.lantern)
+            .disabled(requestingPermissions)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .background(Color.white.opacity(0.45))
+        .overlay(alignment: .bottom) {
+            if showBorder {
+                Rectangle().fill(QiyamaTheme.line).frame(height: 1)
             }
         }
     }
@@ -69,7 +237,7 @@ struct SetupView: View {
                     .font(QiyamaTheme.body(15))
                     .foregroundStyle(QiyamaTheme.slate)
             }
-            .padding(.top, 20)
+            .padding(.top, 16)
 
             CitySearchField(selection: $location, autofocus: true)
         }
@@ -85,7 +253,7 @@ struct SetupView: View {
                     .font(QiyamaTheme.body(15))
                     .foregroundStyle(QiyamaTheme.slate)
             }
-            .padding(.top, 20)
+            .padding(.top, 16)
 
             OffsetControl(minutes: $offset)
 
@@ -113,7 +281,7 @@ struct SetupView: View {
                     .font(QiyamaTheme.body(15))
                     .foregroundStyle(QiyamaTheme.slate)
             }
-            .padding(.top, 20)
+            .padding(.top, 16)
 
             if let img = MarkFactory.qrImage(payload: payload) {
                 Image(uiImage: img)
@@ -166,7 +334,7 @@ struct SetupView: View {
                 .buttonStyle(.plain)
             }
 
-            Text("Morning proof is walking to this mark and scanning it.")
+            Text("Print or share a mark before you begin — morning proof is walking to it and scanning.")
                 .font(QiyamaTheme.body(14))
                 .foregroundStyle(QiyamaTheme.slate)
         }
@@ -195,45 +363,93 @@ struct SetupView: View {
                     .font(QiyamaTheme.body(17, weight: .semibold))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
-                    .foregroundStyle(step == 2 && !didPrintOrShare ? QiyamaTheme.ink : QiyamaTheme.wakeText)
-                    .background(step == 2 && !didPrintOrShare ? Color.clear : (canAdvance ? QiyamaTheme.ink : QiyamaTheme.slate.opacity(0.35)))
-                    .overlay {
-                        if step == 2 && !didPrintOrShare {
-                            Rectangle().stroke(QiyamaTheme.line, lineWidth: 1)
-                        }
-                    }
+                    .foregroundStyle(canAdvance ? QiyamaTheme.wakeText : QiyamaTheme.ink)
+                    .background(canAdvance ? QiyamaTheme.ink : QiyamaTheme.slate.opacity(0.35))
             }
             .buttonStyle(.plain)
-            .disabled(!canAdvance)
+            .disabled(!canAdvance || requestingPermissions)
         }
     }
 
     private var primaryLabel: String {
         switch step {
-        case 0, 1: return "Continue"
-        default: return didPrintOrShare ? "Begin" : "Skip for now"
+        case 0, 1, 2, 3:
+            return "Continue"
+        default:
+            return "Begin"
         }
     }
 
     private var canAdvance: Bool {
-        if step == 0 { return location != nil }
-        return true
+        switch step {
+        case 1:
+            return location != nil
+        case 3:
+            return canContinuePermissions
+        case 4:
+            return didPrintOrShare
+        default:
+            return true
+        }
     }
 
     private func advance() async {
         switch step {
         case 0:
+            step = 1
+        case 1:
             guard let location else { return }
             await store.setLocation(location)
-            step = 1
-            refreshWake()
-        case 1:
-            await store.setOffset(offset)
             step = 2
+            refreshWake()
+        case 2:
+            await store.setOffset(offset)
+            await refreshPermissions()
+            step = 3
+        case 3:
+            guard canContinuePermissions else { return }
+            step = 4
         default:
-            _ = await WakeNotifications.ensureSetup()
+            await refreshPermissions()
+            guard alarmsAllowed else {
+                step = 3
+                return
+            }
+            // Notifications are optional — never gate Begin on them.
             await store.startProgram()
         }
+    }
+
+    private func toggleAlarms() async {
+        if WakeAlarms.isDenied {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                openURL(url)
+            }
+            return
+        }
+        requestingPermissions = true
+        _ = await WakeAlarms.ensureAuthorized()
+        await refreshPermissions()
+        requestingPermissions = false
+    }
+
+    private func toggleNotifications() async {
+        if notificationsDenied {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                openURL(url)
+            }
+            return
+        }
+        requestingPermissions = true
+        _ = await WakeNotifications.requestAuthorization()
+        await refreshPermissions()
+        requestingPermissions = false
+    }
+
+    private func refreshPermissions() async {
+        alarmsAllowed = WakeAlarms.isAuthorized
+        notificationsAllowed = await WakeNotifications.isAuthorized()
+        notificationsDenied = await WakeNotifications.isDenied()
     }
 
     private func refreshWake() {
